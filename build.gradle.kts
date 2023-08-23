@@ -4,7 +4,7 @@ plugins {
     kotlin("jvm") apply false
 }
 
-group = "com.crowdproj.product-models"
+group = "com.crowdproj.product.models"
 version = "0.0.1"
 
 repositories {
