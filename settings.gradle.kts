@@ -3,7 +3,7 @@ rootProject.name = "crowdproj-product-models"
 pluginManagement {
     plugins {
         val kotlinVersion: String by settings
-        val openapiVersion = "6.6.0"
+        val openapiVersion: String by settings
 
         kotlin("jvm") version kotlinVersion apply false
         kotlin("plugin.serialization") version kotlinVersion apply false

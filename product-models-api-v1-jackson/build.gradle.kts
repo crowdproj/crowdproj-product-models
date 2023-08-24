@@ -7,7 +7,7 @@ group = rootProject.group
 version = rootProject.version
 
 dependencies {
-    val jacksonVersion = "2.15.2"
+    val jacksonVersion: String by project
 
     implementation(kotlin("stdlib"))
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
