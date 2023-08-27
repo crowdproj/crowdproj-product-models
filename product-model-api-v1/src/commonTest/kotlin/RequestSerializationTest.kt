@@ -1,12 +1,12 @@
-import com.crowdproj.product.models.api.v1.models.*
-import org.junit.Test
+import com.crowdproj.product.model.api.v1.models.*
+import kotlinx.serialization.json.Json
+import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
 class RequestSerializationTest {
 
     private val request: IProductModelRequest = ProductModelCreateRequest(
-        requestId = "111",
         debug = CpBaseDebug(
             mode = CpRequestDebugMode.STUB,
             stub = CpRequestDebugStubs.SUCCESS
@@ -20,9 +20,8 @@ class RequestSerializationTest {
 
     @Test
     fun serialize() {
-        val json = apiV1Mapper.writeValueAsString(request)
+        val json = Json.encodeToString(IProductModelRequest.serializer(), request)
 
-        assertContains(json, Regex("\"requestId\":\\s*\"111\""))
         assertContains(json, Regex("\"requestType\":\\s*\"create\""))
         assertContains(json, Regex("\"stub\":\\s*\"success\""))
         assertContains(json, Regex("\"name\":\\s*\"product model name\""))
@@ -32,8 +31,8 @@ class RequestSerializationTest {
 
     @Test
     fun deserialize() {
-        val json = apiV1Mapper.writeValueAsString(request)
-        val obj = apiV1Mapper.readValue(json, IRequest::class.java) as ProductModelCreateRequest
+        val json = Json.encodeToString(IProductModelRequest.serializer(), request)
+        val obj = Json.decodeFromString(IProductModelRequest.serializer(), json) as ProductModelCreateRequest
 
         assertEquals(request, obj)
     }

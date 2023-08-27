@@ -1,4 +1,4 @@
-import com.crowdproj.product.models.api.v1.models.*
+import com.crowdproj.product.model.api.v1.models.*
 import exceptions.UnknownProductModelCommand
 import models.*
 

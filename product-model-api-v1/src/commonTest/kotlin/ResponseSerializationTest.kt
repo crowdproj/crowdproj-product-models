@@ -1,5 +1,6 @@
-import com.crowdproj.product.models.api.v1.models.*
-import org.junit.Test
+import com.crowdproj.product.model.api.v1.models.*
+import kotlinx.serialization.json.Json
+import kotlin.test.Test
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 
@@ -19,7 +20,7 @@ class ResponseSerializationTest {
 
     @Test
     fun serialize() {
-        val json = apiV1Mapper.writeValueAsString(response)
+        val json = Json.encodeToString(IProductModelResponse.serializer(), response)
 
         assertContains(json, Regex("\"requestId\":\\s*\"122\""))
         assertContains(json, Regex("\"responseType\":\\s*\"create\""))
@@ -30,8 +31,8 @@ class ResponseSerializationTest {
 
     @Test
     fun deserialize() {
-        val json = apiV1Mapper.writeValueAsString(response)
-        val obj = apiV1Mapper.readValue(json, IResponse::class.java) as ProductModelCreateResponse
+        val json = Json.encodeToString(IProductModelResponse.serializer(), response)
+        val obj = Json.decodeFromString(IProductModelResponse.serializer(), json) as ProductModelCreateResponse
 
         assertEquals(response, obj)
     }

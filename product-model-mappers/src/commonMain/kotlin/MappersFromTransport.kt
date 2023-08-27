@@ -1,5 +1,4 @@
-import com.crowdproj.product.models.api.v1.models.*
-import exception.UnknownRequestClass
+import com.crowdproj.product.model.api.v1.models.*
 import models.*
 import stubs.ProductModelStubs
 
@@ -9,12 +8,10 @@ fun ProductModelContext.fromTransport(request: IRequest) = when (request) {
     is ProductModelUpdateRequest -> fromTransport(request)
     is ProductModelDeleteRequest -> fromTransport(request)
     is ProductModelSearchRequest -> fromTransport(request)
-    else -> throw UnknownRequestClass(request.javaClass)
 }
 
 fun ProductModelContext.fromTransport(request: ProductModelCreateRequest) {
     command = ProductModelCommand.CREATE
-    requestId = request.requestId()
     productModelRequest = request.productModel?.toInternal() ?: ProductModel()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -22,7 +19,6 @@ fun ProductModelContext.fromTransport(request: ProductModelCreateRequest) {
 
 fun ProductModelContext.fromTransport(request: ProductModelReadRequest) {
     command = ProductModelCommand.READ
-    requestId = request.requestId()
     productModelsRequest = request.productModelIds.fromTransport()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -30,7 +26,6 @@ fun ProductModelContext.fromTransport(request: ProductModelReadRequest) {
 
 fun ProductModelContext.fromTransport(request: ProductModelUpdateRequest) {
     command = ProductModelCommand.UPDATE
-    requestId = request.requestId()
     productModelRequest = request.productModel?.toInternal() ?: ProductModel()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -38,7 +33,6 @@ fun ProductModelContext.fromTransport(request: ProductModelUpdateRequest) {
 
 fun ProductModelContext.fromTransport(request: ProductModelDeleteRequest) {
     command = ProductModelCommand.DELETE
-    requestId = request.requestId()
     productModelRequest = request.toInternal()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
@@ -46,13 +40,10 @@ fun ProductModelContext.fromTransport(request: ProductModelDeleteRequest) {
 
 fun ProductModelContext.fromTransport(request: ProductModelSearchRequest) {
     command = ProductModelCommand.SEARCH
-    requestId = request.requestId()
     productModelFilterRequest = request.productModelFilter?.toInternal() ?: ProductModelFilter()
     workMode = request.debug.transportToWorkMode()
     stubCase = request.debug.transportToStubCase()
 }
-
-private fun IRequest?.requestId() = this?.requestId?.let { ProductModelRequestId(it) } ?: ProductModelRequestId.NONE
 
 private fun ProductModelCreateObject.toInternal() = ProductModel(
     name = this.name.orEmpty(),

@@ -1,5 +1,7 @@
 package models
 
+import kotlin.jvm.JvmInline
+
 @JvmInline
 value class ProductModelId(private val id: String) {
     fun asString() = id

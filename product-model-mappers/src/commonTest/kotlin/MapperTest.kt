@@ -1,14 +1,13 @@
-import com.crowdproj.product.models.api.v1.models.*
+import com.crowdproj.product.model.api.v1.models.*
 import models.*
-import org.junit.Test
 import stubs.ProductModelStubs
+import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class MapperTest {
     @Test
     fun fromTransport() {
         val request = ProductModelCreateRequest(
-            requestId = "112",
             debug = CpBaseDebug(
                 mode = CpRequestDebugMode.STUB,
                 stub = CpRequestDebugStubs.SUCCESS
