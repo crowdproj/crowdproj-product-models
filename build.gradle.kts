@@ -1,10 +1,9 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") apply false
+    kotlin("multiplatform") apply false
 }
 
-group = "com.crowdproj.product-models"
+group = "com.crowdproj.product.model"
 version = "0.0.1"
 
 repositories {
@@ -14,11 +13,14 @@ repositories {
 subprojects {
     group = rootProject.group
     version = rootProject.version
+
     repositories {
         mavenCentral()
     }
+}
 
-    tasks.withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "17"
+tasks {
+    val deploy: Task by creating {
+        dependsOn("build")
     }
 }
