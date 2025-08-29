@@ -1,6 +1,6 @@
 plugins {
-    kotlin("jvm") apply false
-    kotlin("multiplatform") apply false
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
 }
 
 group = "com.crowdproj.product.model"

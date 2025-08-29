@@ -1,16 +1,19 @@
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
+
 plugins {
-    kotlin("multiplatform")
-    id("com.crowdproj.generator")
+    alias(libs.plugins.kotlin.multiplatform)
+    alias(libs.plugins.crowdproj.generator)
+    alias(libs.plugins.kotlinx.serialization)
 }
 
 val apiVersion = "v1"
 val apiSpec: Configuration by configurations.creating
-val apiSpecVersion: String by project
+
 dependencies {
     apiSpec(
         group = "com.crowdproj",
         name = "specs-v1",
-        version = apiSpecVersion,
+        version = libs.versions.api.spec.get(),
         classifier = "openapi",
         ext = "yaml"
     )
@@ -26,12 +29,12 @@ kotlin {
         @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
 
-            kotlin.srcDirs("$buildDir/generate-resources/main/src/commonMain/kotlin")
+            kotlin.srcDirs(layout.buildDirectory.dir("generate-resources/src/commonMain/kotlin"))
             dependencies {
                 implementation(kotlin("stdlib-common"))
 
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
-                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+                implementation(libs.kotlinx.serialization.core)
+                implementation(libs.kotlinx.serialization.json)
             }
         }
 
@@ -77,12 +80,12 @@ tasks {
     }
 }
 
-afterEvaluate {
-    val openApiGenerate = tasks.getByName("openApiGenerate")
-    tasks.filter { it.name.startsWith("compile") }.forEach {
-        it.dependsOn(openApiGenerate)
+tasks {
+    val openApiGenerateTask: GenerateTask = getByName("openApiGenerate", GenerateTask::class) {
+        outputDir.set(layout.buildDirectory.file("generate-resources").get().toString())
+        finalizedBy("compileCommonMainKotlinMetadata")
     }
-    tasks.filter { it.name.endsWith("Elements") }.forEach {
-        it.dependsOn(openApiGenerate)
+    filter { it.name.startsWith("compile") }.forEach {
+        it.dependsOn(openApiGenerateTask)
     }
 }
