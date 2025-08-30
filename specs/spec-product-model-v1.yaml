@@ -124,56 +124,7 @@ paths:
 components:
   schemas:
 
-    IProductModelRequest:
-      allOf:
-        - $ref: './base.yaml#/components/schemas/IRequest'
-        - type: object
-          discriminator:
-            propertyName: requestType
-            mapping:
-              create: '#/components/schemas/ProductModelCreateRequest'
-              read: '#/components/schemas/ProductModelReadRequest'
-              update: '#/components/schemas/ProductModelUpdateRequest'
-              delete: '#/components/schemas/ProductModelDeleteRequest'
-              search: '#/components/schemas/ProductModelSearchRequest'
-
-    IProductModelResponse:
-      allOf:
-        - $ref: './base.yaml#/components/schemas/IResponse'
-        - type: object
-          discriminator:
-            propertyName: responseType
-            mapping:
-              create: '#/components/schemas/ProductModelCreateResponse'
-              read: '#/components/schemas/ProductModelReadResponse'
-              update: '#/components/schemas/ProductModelUpdateResponse'
-              delete: '#/components/schemas/ProductModelDeleteResponse'
-              search: '#/components/schemas/ProductModelSearchResponse'
-
-    Error:
-      $ref: './base.yaml#/components/schemas/Error'
-
-    RequestId:
-      $ref: './base.yaml#/components/schemas/RequestId'
-
-    ProductModelLock:
-      type: string
-      description: Версия оптимистичной блокировки
-
-    ResponseResult:
-      $ref: './base.yaml#/components/schemas/ResponseResult'
-
-    RequestDebug:
-      $ref: './base.yaml#/components/schemas/CpRequestDebug'
-
-    ProductModelId:
-      type: string
-      description: Product model ID
-
-    UserId:
-      type: string
-      description: User id
-
+    # PRODUCT MODEL
     BaseProductModel:
       type: object
       description: Object describes product models that are the same for create and update
@@ -188,20 +139,39 @@ components:
           type: string
           description: Product group id # from "Product group" microservice
 
-    ProductModelCreateObject:
-      allOf:
-        - $ref: '#/components/schemas/BaseProductModel'
+    ProductModelId:
+      type: string
+      description: Product model id
 
-    ProductModelUpdateObject:
+    ProductModelLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    UserId:
+      type: string
+      description: User id
+
+    # REQUEST
+    IProductModelRequest:
       allOf:
-        - $ref: '#/components/schemas/BaseProductModel'
+        - $ref: './base.yaml#/components/schemas/IRequest'
         - type: object
-          properties:
-            id:
-              $ref: '#/components/schemas/ProductModelId'
-            lock:
-              $ref: '#/components/schemas/ProductModelLock'
+          discriminator:
+            propertyName: requestType
+            mapping:
+              create: '#/components/schemas/ProductModelCreateRequest'
+              read: '#/components/schemas/ProductModelReadRequest'
+              update: '#/components/schemas/ProductModelUpdateRequest'
+              delete: '#/components/schemas/ProductModelDeleteRequest'
+              search: '#/components/schemas/ProductModelSearchRequest'
 
+    RequestId:
+      $ref: './base.yaml#/components/schemas/RequestId'
+
+    RequestDebug:
+      $ref: './base.yaml#/components/schemas/CpRequestDebug'
+
+    #  Create
     ProductModelCreateRequest:
       allOf:
         - $ref: '#/components/schemas/IProductModelRequest'
@@ -211,6 +181,11 @@ components:
             productModel:
               $ref: '#/components/schemas/ProductModelCreateObject'
 
+    ProductModelCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseProductModel'
+
+    # Read
     ProductModelReadRequest:
       allOf:
         - $ref: '#/components/schemas/IProductModelRequest'
@@ -222,6 +197,7 @@ components:
               items:
                 $ref: '#/components/schemas/ProductModelId'
 
+    # Update
     ProductModelUpdateRequest:
       allOf:
         - $ref: '#/components/schemas/IProductModelRequest'
@@ -231,6 +207,17 @@ components:
             productModel:
               $ref: '#/components/schemas/ProductModelUpdateObject'
 
+    ProductModelUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseProductModel'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/ProductModelId'
+            lock:
+              $ref: '#/components/schemas/ProductModelLock'
+
+    # Delete
     ProductModelDeleteRequest:
       allOf:
         - $ref: '#/components/schemas/IProductModelRequest'
@@ -242,6 +229,7 @@ components:
             lock:
               $ref: '#/components/schemas/ProductModelLock'
 
+    # Search
     ProductModelSearchRequest:
       allOf:
         - $ref: '#/components/schemas/IProductModelRequest'
@@ -262,7 +250,25 @@ components:
           type: string
           description: Product model description
 
+    # RESPONSE
+    IProductModelResponse:
+      allOf:
+        - $ref: './base.yaml#/components/schemas/IResponse'
+        - type: object
+          discriminator:
+            propertyName: responseType
+            mapping:
+              create: '#/components/schemas/ProductModelCreateResponse'
+              read: '#/components/schemas/ProductModelReadResponse'
+              update: '#/components/schemas/ProductModelUpdateResponse'
+              delete: '#/components/schemas/ProductModelDeleteResponse'
+              search: '#/components/schemas/ProductModelSearchResponse'
 
+    ResponseResult:
+      $ref: './base.yaml#/components/schemas/ResponseResult'
+
+    Error:
+      $ref: './base.yaml#/components/schemas/Error'
 
     ProductModelResponseObject:
       allOf:

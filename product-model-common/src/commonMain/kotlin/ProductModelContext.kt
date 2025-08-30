@@ -5,7 +5,7 @@ import stubs.ProductModelStubs
 data class ProductModelContext(
     var command: ProductModelCommand = ProductModelCommand.NONE,
     var state: ProductModelState = ProductModelState.NONE,
-    val errors: MutableList<ProductModelError> = mutableListOf(),
+    var errors: MutableList<ProductModelError> = mutableListOf(),
 
     var workMode: ProductModelWorkMode = ProductModelWorkMode.TEST,
     var stubCase: ProductModelStubs = ProductModelStubs.NONE,

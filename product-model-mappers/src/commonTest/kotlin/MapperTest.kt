@@ -17,10 +17,9 @@ class MapperTest {
                 description = "product model description",
                 productGroupId = "3"
             )
-        ) as IProductModelRequest
+        )
 
-        val context = ProductModelContext()
-        context.fromTransport(request)
+        val context = request.toContext()
 
         assertEquals(ProductModelStubs.SUCCESS, context.stubCase)
         assertEquals(ProductModelWorkMode.STUB, context.workMode)
@@ -52,7 +51,7 @@ class MapperTest {
             state = ProductModelState.RUNNING,
         )
 
-        val request = context.toTransportProductModel() as ProductModelCreateResponse
+        val request = context.toResponse() as ProductModelCreateResponse
 
         assertEquals("112", request.requestId)
         assertEquals("product model name", request.productModel?.name)
